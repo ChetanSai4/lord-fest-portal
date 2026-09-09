@@ -6,12 +6,37 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
+const cache = new Map();
+
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
+  if (config.method === 'get') {
+    const cachedData = cache.get(config.url);
+    if (cachedData) {
+      config.adapter = () => Promise.resolve({
+        data: cachedData,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config,
+        request: {}
+      });
+    }
+  } else {
+    cache.clear();
+  }
   return config;
+});
+
+api.interceptors.response.use(response => {
+  if (response.config.method === 'get') {
+    cache.set(response.config.url, response.data);
+  }
+  return response;
 });
 
 export const getDashboard = () => api.get('/dashboard');
