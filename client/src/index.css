@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-slate-200 antialiased font-sans transition-colors duration-300 overflow-x-hidden;
+  }
+}
+
+.watermark-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  background-image: url('/hero-backdrop-new.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+}
+
+/* Crazy background orbs */
+.crazy-bg-orb-1 {
+  position: fixed;
+  top: -10%; left: -10%; width: 50vw; height: 50vw;
+  background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(80px);
+  animation: float 10s infinite ease-in-out alternate;
+  pointer-events: none;
+}
+.crazy-bg-orb-2 {
+  position: fixed;
+  bottom: -20%; right: -10%; width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(223,179,108,0.15) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(100px);
+  animation: float 14s infinite ease-in-out alternate-reverse;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-50px) scale(1.1); }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-saffron-500 to-divine-500 hover:from-saffron-400 hover:to-divine-400 text-black font-extrabold py-3 px-8 rounded-2xl shadow-[0_0_20px_rgba(249,115,22,0.6)] hover:shadow-[0_0_40px_rgba(249,115,22,1)] transition-all duration-300 flex items-center justify-center border border-white/20 active:scale-95 z-10;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    animation: shine 3s infinite;
+    z-index: -1;
+  }
+  
+  @keyframes shine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+  }
+
+  .btn-secondary {
+    @apply bg-white/80 dark:bg-black/50 backdrop-blur-xl hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-divine-200 border border-slate-200 dark:border-divine-300/40 font-bold py-3 px-8 rounded-2xl shadow-sm dark:shadow-[0_0_15px_rgba(223,179,108,0.2)] hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(223,179,108,0.5)] transition-all duration-300 flex items-center justify-center active:scale-95;
+  }
+
+  .card {
+    @apply bg-white dark:bg-white/5 backdrop-blur-2xl rounded-3xl shadow-xl dark:shadow-[0_8px_30px_rgba(0,0,0,0.8)] border border-slate-200 dark:border-white/10 overflow-hidden relative transition-all duration-500;
+  }
+  
+  .card:hover {
+    @apply shadow-2xl dark:shadow-[0_20px_50px_rgba(249,115,22,0.25)] -translate-y-2 border-saffron-300 dark:border-saffron-500/50;
+  }
+
+  .input-field {
+    @apply w-full bg-white dark:bg-black/60 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-inner focus:ring-2 focus:ring-saffron-500 focus:border-saffron-500 text-slate-900 dark:text-white sm:text-base px-5 py-4 transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.3)];
+  }
+
+  .glass-header {
+    @apply bg-white/80 dark:bg-black/60 backdrop-blur-3xl border-b border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.8)];
+  }
+
+}
+
+/* Proper global scrollbar for both themes */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-saffron-600 rounded-full hover:bg-slate-400 dark:hover:bg-saffron-400 transition-colors shadow-[0_0_10px_rgba(249,115,22,0.5)]; }
+/* Global body theme logic */
+body {
+  @apply bg-slate-50 dark:bg-black text-slate-800 dark:text-slate-200;
+}
+
+body .watermark-bg {
+  @apply opacity-5 dark:opacity-15 mix-blend-multiply dark:mix-blend-color-dodge;
+}
