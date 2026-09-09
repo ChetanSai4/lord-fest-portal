@@ -4,7 +4,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import connectDB from './config/db.js';
-import axios from 'axios';
 import { errorHandler } from './middleware/errorHandler.js';
 import { autoSeed } from './seed/autoSeed.js';
 
@@ -70,7 +69,7 @@ connectDB().then(async () => {
     
     // Keep-alive self-ping for Render Free Tier (every 14 mins)
     setInterval(() => {
-      axios.get('https://lord-fest-portal.onrender.com/api/festival')
+      fetch('https://lord-fest-portal.onrender.com/api/festival')
         .then(() => console.log('Self-ping successful'))
         .catch(err => console.log('Self-ping failed', err.message));
     }, 14 * 60 * 1000);
