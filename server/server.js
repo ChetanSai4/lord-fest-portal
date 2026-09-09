@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import connectDB from './config/db.js';
+import axios from 'axios';
 import { errorHandler } from './middleware/errorHandler.js';
 import { autoSeed } from './seed/autoSeed.js';
 
@@ -64,7 +65,16 @@ app.use(errorHandler);
 // Connect to DB and Start Server
 connectDB().then(async () => {
   await autoSeed(); // Run auto-seeder
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    
+    // Keep-alive self-ping for Render Free Tier (every 14 mins)
+    setInterval(() => {
+      axios.get('https://lord-fest-portal.onrender.com/api/festival')
+        .then(() => console.log('Self-ping successful'))
+        .catch(err => console.log('Self-ping failed', err.message));
+    }, 14 * 60 * 1000);
+  });
 }).catch(err => {
   console.error('Database connection failed', err);
   process.exit(1);
