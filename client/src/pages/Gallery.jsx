@@ -72,7 +72,6 @@ const Gallery = () => {
               <img 
                 src={`${API_BASE_URL}/gallery/image/${photo._id}`} 
                 alt={photo.filename} 
-                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
                 onClick={() => setLightboxImg(photo._id)}
               />

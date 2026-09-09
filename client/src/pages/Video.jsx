@@ -99,7 +99,6 @@ const VideoPage = () => {
                  className="absolute inset-0 w-full h-full border-0"
                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                  allowFullScreen
-                 loading="lazy"
                ></iframe>
             </div>
             <div className="flex items-start justify-between gap-4 px-2">
