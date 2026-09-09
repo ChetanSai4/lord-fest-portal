@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getGallery, uploadGallery, deleteGallery } from '../services/api';
+import { getGallery, uploadGallery, deleteGallery, API_BASE_URL } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { UploadCloud, X, Maximize2, Image as ImageIcon } from 'lucide-react';
@@ -70,7 +70,7 @@ const Gallery = () => {
           >
             <div className="w-full h-full rounded-xl overflow-hidden relative">
               <img 
-                src={`/api/gallery/image/${photo._id}`} 
+                src={`${API_BASE_URL}/gallery/image/${photo._id}`} 
                 alt={photo.filename} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
                 onClick={() => setLightboxImg(photo._id)}
@@ -107,7 +107,7 @@ const Gallery = () => {
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.8, y: -50 }}
             transition={{ type: 'spring', bounce: 0.4 }}
-            src={`/api/gallery/image/${lightboxImg}`} 
+            src={`${API_BASE_URL}/gallery/image/${lightboxImg}`} 
             className="max-h-[90vh] max-w-[95vw] object-contain rounded-2xl shadow-[0_0_50px_rgba(249,115,22,0.3)]" 
             alt="Enlarged" 
             onClick={e => e.stopPropagation()}

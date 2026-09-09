@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAdmins, createAdmin, deleteAdmin } from '../services/api';
+import { getAdmins, createAdmin, deleteAdmin, API_BASE_URL } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { Shield, Plus, Trash2, UserCog, User } from 'lucide-react';
@@ -57,7 +57,7 @@ const AdminUsers = () => {
            <p className="text-slate-500 text-sm mt-1 font-medium">Add or remove sub-admin access.</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => window.open('/api/dashboard/export?token=' + localStorage.getItem('token'), '_blank')} className="btn-secondary py-2.5 px-6 border-blue-500 text-blue-600 dark:border-blue-700 dark:text-blue-400">
+          <button onClick={() => window.open(`${API_BASE_URL}/dashboard/export?token=` + localStorage.getItem('token'), '_blank')} className="btn-secondary py-2.5 px-6 border-blue-500 text-blue-600 dark:border-blue-700 dark:text-blue-400">
             Export JSON Data
           </button>
           <button onClick={() => setIsModalOpen(true)} className="btn-primary py-2.5 px-6">

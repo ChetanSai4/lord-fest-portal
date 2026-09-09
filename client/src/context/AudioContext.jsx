@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useRef, useEffect } from 'react';
+import { API_BASE_URL } from '../services/api';
 
 const AudioContext = createContext();
 
@@ -40,7 +41,7 @@ export const AudioProvider = ({ children }) => {
       audioRef.current.play();
       setIsPlaying(true);
     } else {
-      audioRef.current.src = `/api/audio/stream/${track._id}`;
+      audioRef.current.src = `${API_BASE_URL}/audio/stream/${track._id}`;
       audioRef.current.play();
       setCurrentTrack(track);
       setIsPlaying(true);

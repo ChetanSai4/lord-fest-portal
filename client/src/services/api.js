@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+export const API_BASE_URL = import.meta.env.PROD ? 'https://lord-fest-portal.onrender.com/api' : '/api';
+
 const api = axios.create({
-  baseURL: import.meta.env.PROD ? 'https://lord-fest-portal.onrender.com/api' : '/api',
+  baseURL: API_BASE_URL,
 });
 
 api.interceptors.request.use(config => {
