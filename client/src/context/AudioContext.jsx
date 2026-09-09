@@ -38,11 +38,12 @@ export const AudioProvider = ({ children }) => {
       audioRef.current.pause();
       setIsPlaying(false);
     } else if (currentTrack?._id === track._id && !isPlaying) {
-      audioRef.current.play();
+      audioRef.current.play().catch(err => console.error("Audio resume error:", err));
       setIsPlaying(true);
     } else {
       audioRef.current.src = `${API_BASE_URL}/audio/stream/${track._id}`;
-      audioRef.current.play();
+      audioRef.current.load();
+      audioRef.current.play().catch(err => console.error("Audio playback error:", err));
       setCurrentTrack(track);
       setIsPlaying(true);
       if (trackList.length > 0) setPlaylist(trackList);
@@ -54,7 +55,7 @@ export const AudioProvider = ({ children }) => {
       audioRef.current.pause();
     } else {
       if (audioRef.current.src) {
-        audioRef.current.play();
+        audioRef.current.play().catch(err => console.error("Audio resume error:", err));
       }
     }
     setIsPlaying(!isPlaying);
