@@ -64,11 +64,8 @@ app.use(errorHandler);
 // Connect to DB and Start Server
 connectDB().then(async () => {
   await autoSeed(); // Run auto-seeder
-  if (!process.env.VERCEL) {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  }
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }).catch(err => {
   console.error('Database connection failed', err);
+  process.exit(1);
 });
-
-export default app;

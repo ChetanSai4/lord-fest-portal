@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.PROD ? 'https://vinayaka-backend.vercel.app/api' : '/api',
+  baseURL: import.meta.env.PROD ? 'https://lord-fest-portal.onrender.com/api' : '/api',
 });
 
 api.interceptors.request.use(config => {
