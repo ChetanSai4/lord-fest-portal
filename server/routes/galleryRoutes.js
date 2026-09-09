@@ -46,6 +46,7 @@ router.get('/image/:id', async (req, res, next) => {
     if (!photo) return res.status(404).json({ success: false, message: 'Image not found' });
 
     res.set('Content-Type', photo.contentType);
+    res.set('Cache-Control', 'public, max-age=31536000');
     const downloadStream = bucket.openDownloadStream(photo.gridFsFileId);
     downloadStream.pipe(res);
   } catch (error) {

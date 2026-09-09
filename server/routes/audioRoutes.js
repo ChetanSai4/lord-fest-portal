@@ -64,6 +64,7 @@ router.get('/stream/:id', async (req, res, next) => {
         'Accept-Ranges': 'bytes',
         'Content-Length': chunksize,
         'Content-Type': audio.contentType,
+        'Cache-Control': 'public, max-age=31536000'
       });
 
       const downloadStream = bucket.openDownloadStream(audio.gridFsFileId, {
@@ -75,7 +76,8 @@ router.get('/stream/:id', async (req, res, next) => {
       res.writeHead(200, {
         'Content-Length': audio.size,
         'Content-Type': audio.contentType,
-        'Accept-Ranges': 'bytes'
+        'Accept-Ranges': 'bytes',
+        'Cache-Control': 'public, max-age=31536000'
       });
       const downloadStream = bucket.openDownloadStream(audio.gridFsFileId);
       downloadStream.pipe(res);
