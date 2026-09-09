@@ -2,8 +2,13 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 let gridfsBucket;
+let isConnected = false;
 
 const connectDB = async () => {
+  if (isConnected) {
+    console.log('Using existing MongoDB connection');
+    return;
+  }
   try {
     let mongoUri = process.env.MONGODB_URI;
     if (!mongoUri) {
@@ -27,6 +32,7 @@ const connectDB = async () => {
     }
 
     const conn = await mongoose.connect(mongoUri);
+    isConnected = true;
     console.log(`MongoDB Connected: ${conn.connection.host}`);
 
     // Initialize GridFSBucket
@@ -37,9 +43,19 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error(`Error: ${error.message}`);
-    process.exit(1);
+    // Only exit in development, prevent lambda crashing in prod
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
   }
 };
 
-export const getGridFSBucket = () => gridfsBucket;
+export const getGridFSBucket = () => {
+  if (!gridfsBucket && isConnected) {
+    gridfsBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+      bucketName: 'uploads'
+    });
+  }
+  return gridfsBucket;
+};
 export default connectDB;
