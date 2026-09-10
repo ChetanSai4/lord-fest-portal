@@ -12,6 +12,7 @@ const AppShell = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const isViewingAdmin = location.pathname.startsWith('/admin') || isAdmin;
 
 
   useEffect(() => {
@@ -39,11 +40,13 @@ const AppShell = () => {
     navItems.push({ name: 'Manage Admins', path: '/admin/users', icon: <UserCog size={20} /> });
   }
 
-  const handlePortalSwitch = () => {
-    if (isAdmin) {
-      logout();
+  const handlePortalSwitch = (destination) => {
+    if (destination === 'public') {
+      if (isAdmin) {
+        logout();
+      }
       navigate('/');
-    } else {
+    } else if (destination === 'admin') {
       navigate('/admin/settings');
     }
   };
@@ -70,7 +73,7 @@ const AppShell = () => {
             </motion.div>
             <div>
               <span className="block text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-saffron-500 to-divine-600 dark:from-saffron-300 dark:via-divine-200 dark:to-white drop-shadow-sm dark:drop-shadow-[0_0_10px_rgba(249,115,22,0.5)] uppercase">LORD FEST</span>
-              <span className="block text-[10px] text-saffron-600 dark:text-saffron-500 font-bold tracking-[0.3em] uppercase -mt-1">{isAdmin ? 'Admin Portal' : 'Public Portal'}</span>
+              <span className="block text-[10px] text-saffron-600 dark:text-saffron-500 font-bold tracking-[0.3em] uppercase -mt-1">{isViewingAdmin ? 'Admin Portal' : 'Public Portal'}</span>
             </div>
           </div>
           
@@ -80,10 +83,10 @@ const AppShell = () => {
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <div className="hidden sm:flex bg-slate-100 dark:bg-white/5 backdrop-blur-xl p-1 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-               <button onClick={() => isAdmin && handlePortalSwitch()} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${!isAdmin ? 'bg-white dark:bg-black/60 text-saffron-600 dark:text-saffron-400 shadow-sm dark:shadow-[0_0_15px_rgba(249,115,22,0.3)] border border-saffron-500/30' : 'text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'}`}>
+               <button onClick={() => handlePortalSwitch('public')} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${!isViewingAdmin ? 'bg-white dark:bg-black/60 text-saffron-600 dark:text-saffron-400 shadow-sm dark:shadow-[0_0_15px_rgba(249,115,22,0.3)] border border-saffron-500/30' : 'text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'}`}>
                  <User size={16}/> Public
                </button>
-               <button onClick={() => !isAdmin && handlePortalSwitch()} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${isAdmin ? 'bg-gradient-to-r from-saffron-400 to-divine-500 dark:from-saffron-500 dark:to-divine-500 text-white dark:text-black shadow-md dark:shadow-[0_0_20px_rgba(249,115,22,0.6)]' : 'text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'}`}>
+               <button onClick={() => handlePortalSwitch('admin')} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${isViewingAdmin ? 'bg-gradient-to-r from-saffron-400 to-divine-500 dark:from-saffron-500 dark:to-divine-500 text-white dark:text-black shadow-md dark:shadow-[0_0_20px_rgba(249,115,22,0.6)]' : 'text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'}`}>
                  <Shield size={16}/> Admin
                </button>
             </div>
@@ -133,8 +136,8 @@ const AppShell = () => {
               </div>
               <div className="flex sm:hidden p-4 border-b border-slate-200 dark:border-white/5 justify-between items-center bg-white dark:bg-transparent gap-4">
                 <div className="flex bg-slate-100 dark:bg-black/50 p-1 rounded-xl border border-slate-200 dark:border-white/10 w-full">
-                   <button onClick={() => isAdmin && handlePortalSwitch()} className={`flex-1 items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 ${!isAdmin ? 'bg-white dark:bg-white/10 text-saffron-600 dark:text-saffron-400 border border-saffron-500/30 shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'}`}>Public</button>
-                   <button onClick={() => !isAdmin && handlePortalSwitch()} className={`flex-1 items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 ${isAdmin ? 'bg-gradient-to-r from-saffron-400 to-divine-500 text-white dark:text-black shadow-md' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'}`}>Admin</button>
+                   <button onClick={() => { setSidebarOpen(false); handlePortalSwitch('public'); }} className={`flex-1 items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 ${!isViewingAdmin ? 'bg-white dark:bg-white/10 text-saffron-600 dark:text-saffron-400 border border-saffron-500/30 shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'}`}>Public</button>
+                   <button onClick={() => { setSidebarOpen(false); handlePortalSwitch('admin'); }} className={`flex-1 items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 ${isViewingAdmin ? 'bg-gradient-to-r from-saffron-400 to-divine-500 text-white dark:text-black shadow-md' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'}`}>Admin</button>
                 </div>
               </div>
               <nav className="flex flex-col p-4 gap-2">
